@@ -42,7 +42,7 @@ def get_user_input(message: str, expected_type: str, can_cancel: bool = True, pr
     """
     print_func(message)
     data = input(">>> ")
-    if data in ("cancel", ""):
+    if data.lower() in ("cancel", "", "cancel."):
         if can_cancel:
             return None
         print_func("invalid entry. try again")
@@ -57,9 +57,9 @@ def get_user_input(message: str, expected_type: str, can_cancel: bool = True, pr
     elif expected_type == STR_TYPE:
         return data
     elif expected_type == BOOL_TYPE:
-        if data.lower() in ("n", "no", "nope", "0", "false"):
+        if data.lower() in ("n", "no", "nope", "0", "false", "nah"):
             return False
-        if data.lower() in ("y", "yes", "yeah", "1", "true"):
+        if data.lower() in ("y", "yes", "yeah", "1", "true", "yup"):
             return True
         print_func("invalid entry. try again.")
         return get_user_input(message, expected_type, can_cancel, print_func)
