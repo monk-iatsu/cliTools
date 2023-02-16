@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-VERSION = '0.0.5'
+VERSION = '0.0.7'
 DESCRIPTION = 'Text tools for cli based progams'
 LONG_DESCRIPTION = 'tools like typing print and user input control'
 

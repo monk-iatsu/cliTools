@@ -38,7 +38,7 @@ def typing_print(message: str, *args, **kwargs):
     print("\n", end="", flush=True, *args, **kwargs)
 
 
-def get_user_input(msg: str, expected_type: str, can_cancel: bool = True, print_func=print, allow_newlines: bool = True, help_msg: str = None *args, **kwargs):
+def get_user_input(msg: str, expected_type: str, can_cancel: bool = True, print_func=print, allow_newlines: bool = True, help_msg: str = None, *args, **kwargs):
     """
     Description:
         get user input and returns the expected datatype
@@ -50,8 +50,8 @@ def get_user_input(msg: str, expected_type: str, can_cancel: bool = True, print_
     :param help_msg: the message to print if the user enters the string '?help?'
     :return: The data in the type equal to expected_type or None if the user cancels
     """
-    print_func(message, *args, **kwargs)
-    data = input(">>> ")
+    print_func(msg, *args, **kwargs)
+    data = input("for help enter '?help?'>>> ")
     if data.lower() in SYSTEM_ENTRIES["cancel"]:
         if can_cancel:
             return None
@@ -60,6 +60,9 @@ def get_user_input(msg: str, expected_type: str, can_cancel: bool = True, print_
     if data.lower() in SYSTEM_ENTRIES["help"]:
         if help_msg is not None:
             print(help_msg)
+            return get_user_input(msg, expected_type, can_cancel=can_cancel, print_func=print_func, allow_newlines=allow_newlines, help_msg=help_msg)
+        else:
+            print("Help message not found.")
             return get_user_input(msg, expected_type, can_cancel=can_cancel, print_func=print_func, allow_newlines=allow_newlines, help_msg=help_msg)
     if expected_type == INT_TYPE:
         try:
