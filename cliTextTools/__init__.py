@@ -33,11 +33,11 @@ INT_HELP = "Enter a number with out a decimal point"
 FLOAT_HELP = "Enter a number with a decimal point. if it has no decimal place end with .0"
 
 
-def typing_print(message: str, *args, **kwargs):
+def typing_print(message: str, end: str = "\n", *args, **kwargs):
     """
     Description:
         Simulates the typing of a keyboard with a given message
-    :param message: The message you wish to simulate a keyboard with
+    :param message: The message you wish to simulate printing with a keyboard
     :return: None
     """
     for char in message:
@@ -47,7 +47,7 @@ def typing_print(message: str, *args, **kwargs):
             sleep = random.randrange(TIMING_RANGE_LOW, TIMING_RANGE_HIGH) / TIMING_DIVISOR
             time.sleep(sleep)
         print(char, end="", flush=True, *args, **kwargs)
-    print("\n", end="", flush=True, *args, **kwargs)
+    print(end, end="", flush=True, *args, **kwargs)
 
 
 def get_user_input(msg: str, expected_type: str, can_cancel: bool = True, print_func=print, allow_newlines: bool = True, help_msg: str = None, *args, **kwargs):
@@ -145,3 +145,18 @@ def _parse_string_mods(string: str):
         for i in data.split("\\t"):
             data = f"{data}\t{i}"
     return data
+
+
+def parse(string: str):
+    return _parse_string_mods(string)
+
+
+def get_multiple_inputs(
+        input_msg: str,
+        expected_type: str,
+        help_msg= str,
+        min_expected_qnty: int = None,
+        max_expected_qnty: int = None,
+        *args, **kwargs
+):
+    pass
