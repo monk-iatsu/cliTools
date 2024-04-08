@@ -2,38 +2,41 @@ import os
 import time
 import sys
 import random
+from typing import List, Dict, Set, Union, NoReturn
 
-TIMING_RANGE_LOW = 1
-TIMING_RANGE_HIGH = 3
-TIMING_DIVISOR = 10
-SPACE_TIMING = 0.5
+output_options = Union[str, int, bool, float, NoReturn]
 
-INT_TYPE = "int"
-STR_TYPE = "str"
-BOOL_TYPE = "bool"
-FLOAT_TYPE = "flt"
+TIMING_RANGE_LOW: int = 1
+TIMING_RANGE_HIGH: int = 3
+TIMING_DIVISOR: int = 10
+SPACE_TIMING: float = 0.5
+
+INT_TYPE: str = "int"
+STR_TYPE: str = "str"
+BOOL_TYPE: str = "bool"
+FLOAT_TYPE: str = "flt"
 
 PLTFRM = sys.platform
 
-SYSTEM_ENTRIES = {
+SYSTEM_ENTRIES: Dict[str, Set[str]] = {
     "help": ("?help?", "?h?"),
     "cancel": ("?cancel?", "cancel", "", "cancel.")
 }
 
-NO_ENTRIES = ("n", "no", "nope", "0", "false", "nah")
-YES_ENTRIES = ("y", "yes", "yeah", "1", "true", "yup")
+NO_ENTRIES: Set[str] = ("n", "no", "nope", "0", "false", "nah")
+YES_ENTRIES: Set[str] = ("y", "yes", "yeah", "1", "true", "yup")
 
-BOOL_HELP = "enter one of the following: [\n"
+BOOL_HELP: str = "enter one of the following: [\n"
 for entry in NO_ENTRIES:
-    BOOL_HELP = f"{BOOL_HELP}\t'{entry}', \n"
+    BOOL_HELP: str = f"{BOOL_HELP}\t'{entry}', \n"
 for entry in YES_ENTRIES:
-    BOOL_HELP = f"{BOOL_HELP}'\t{entry}', \n"
-BOOL_HELP = f"{BOOL_HELP[:-3]}]"
-INT_HELP = "Enter a number with out a decimal point"
+    BOOL_HELP:str = f"{BOOL_HELP}'\t{entry}', \n"
+BOOL_HELP: str = f"{BOOL_HELP[:-3]}]"
+INT_HELP: str = "Enter a number with out a decimal point"
 FLOAT_HELP = "Enter a number with a decimal point. if it has no decimal place end with .0"
 
 
-def typing_print(message: str, end: str = "\n", *args, **kwargs):
+def typing_print(message: str, end: str = "\n", *args, **kwargs) -> None:
     """
     Description:
         Simulates the typing of a keyboard with a given message
@@ -50,7 +53,7 @@ def typing_print(message: str, end: str = "\n", *args, **kwargs):
     print(end, end="", flush=True, *args, **kwargs)
 
 
-def get_user_input(msg: str, expected_type: str, can_cancel: bool = True, print_func=print, allow_newlines: bool = True, help_msg: str = None, *args, **kwargs):
+def get_user_input(msg: str, expected_type: str, can_cancel: bool = True, print_func=print, allow_newlines: bool = True, help_msg: str = None, *args, **kwargs) -> output_options:
     """
     Description:
         get user input and returns the expected datatype
@@ -104,7 +107,7 @@ def get_user_input(msg: str, expected_type: str, can_cancel: bool = True, print_
         raise NotImplementedError
 
 
-def convert_string_to_float(data: str):
+def convert_string_to_float(data: str) -> float:
     """
     Description:
         converts string to float
@@ -158,5 +161,5 @@ def get_multiple_inputs(
         min_expected_qnty: int = None,
         max_expected_qnty: int = None,
         *args, **kwargs
-):
-    pass
+) -> output_options:
+    raise NotImplementedError
