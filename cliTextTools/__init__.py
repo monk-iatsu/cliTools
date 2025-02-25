@@ -11,6 +11,13 @@ TIMING_RANGE_HIGH: int = 3
 TIMING_DIVISOR: int = 10
 SPACE_TIMING: float = 0.5
 
+CUSTOM_TYPES = {
+    "custom": {
+        "test_func": function,
+        "help_msg": ""
+    }
+}
+
 INT_TYPE: str = "int"
 STR_TYPE: str = "str"
 BOOL_TYPE: str = "bool"
@@ -53,7 +60,7 @@ def typing_print(message: str, end: str = "\n", *args, **kwargs) -> None:
     print(end, end="", flush=True, *args, **kwargs)
 
 
-def get_user_input(msg: str, expected_type: str, can_cancel: bool = True, print_func=print, allow_newlines: bool = True, help_msg: str = None, *args, **kwargs) -> output_options:
+def get_user_input(msg: str, expected_type: str, can_cancel: bool = True, print_func=print, allow_newlines: bool = True, help_msg: str = None, is_custom_test: bool = False, *args, **kwargs) -> output_options:
     """
     Description:
         get user input and returns the expected datatype
@@ -79,11 +86,19 @@ def get_user_input(msg: str, expected_type: str, can_cancel: bool = True, print_
         else:
             print("Help message not found.", *args, **kwargs)
             return get_user_input(msg, expected_type, can_cancel=can_cancel, print_func=print_func, allow_newlines=allow_newlines, help_msg=help_msg, *args, **kwargs)
+    if is_custom_test:
+        if expected_type in CUSTOM_TYPES.keys():
+            result, success = CUSTOM_TYPES[expected_type]["test_func"](data)
+            if success and result is not None:
+                return result
+            else:
+                print_func("Invalid entry. Try again", *args, **kwargs)
+                return get_user_input(msg, expected_type, can_cancel=can_cancel, print_func=print_func, allow_newlines=allow_newlines, help_msg=help_msg, is_custom_test=is_custom_test, *args, **kwargs)
     if expected_type == INT_TYPE:
         try:
             data = int(data)
         except ValueError:
-            print_func("invalid entry. try again", *args, **kwargs)
+            print_func("Invalid entry. Try again", *args, **kwargs)
             return get_user_input(msg, expected_type, can_cancel=can_cancel, print_func=print_func, allow_newlines=allow_newlines, help_msg=help_msg, *args, **kwargs)
         return data
     elif expected_type == STR_TYPE:
