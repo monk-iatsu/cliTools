@@ -19,7 +19,7 @@ PLTFRM = sys.platform
 
 SYSTEM_ENTRIES = {
     "help": ("?help?", "?h?"),
-    "cancel": ("?cancel?", "cancel", "", "cancel.")
+    "cancel": ("?cancel?", "cancel", "", "cancel.", "?c?")
 }
 
 NO_ENTRIES = ("n", "no", "nope", "0", "false", "nah")
@@ -72,7 +72,7 @@ def get_user_input(msg: str, expected_type: str, can_cancel: bool = True, print_
     if data.lower() in SYSTEM_ENTRIES["cancel"]:
         if can_cancel:
             return None
-        print_func("invalid entry. try again", *args, **kwargs)
+        print_func("Canceling has been disabled for this input, try again.", *args, **kwargs)
         return get_user_input(msg, expected_type, can_cancel=can_cancel, print_func=print_func, allow_newlines=allow_newlines, help_msg=help_msg, attempts=attempts+1, *args, **kwargs)
     if data.lower() in SYSTEM_ENTRIES["help"]:
         if help_msg is not None:
