@@ -60,64 +60,64 @@ def typing_print(message: str, end: str = "\n", *args, **kwargs) -> None:
     print(end, end="", flush=True, *args, **kwargs)
 
 
-def get_user_input(msg: str, expected_type: str, can_cancel: bool = True, print_func=print, allow_newlines: bool = True, help_msg: str = None, is_custom_test: bool = False, *args, **kwargs) -> output_options:
+def get_user_input(message: str, expected_type: str, can_cancel: bool = True, print_function=print, allow_newlines: bool = True, help_messege: str = None, is_custom_test: bool = False, *args, **kwargs) -> output_options:
     """
     Description:
         get user input and returns the expected datatype
-    :param msg: the message to tell the user what to type
+    :param messege: the message to tell the user what to type
     :param expected_type: a string consisting of the type of data the user needs to enter
     :param can_cancel: a bool that decides if the user can cancel
     :param print_func: the function to which the messages be printed
     :param allow_newlines: weather or not the user can enter emulated newlines and allow the system to parse them
-    :param help_msg: the message to print if the user enters the string '?help?'
+    :param help_messege: the message to print if the user enters the string '?help?'
     :return: The data in the type equal to expected_type or None if the user cancels
     """
-    print_func(msg, *args, **kwargs)
-    data = input("for help enter '?help?'>>> ")
-    if data.lower() in SYSTEM_ENTRIES["cancel"]:
+    print_function(message, *args, **kwargs)
+    user_input = input("for help enter '?help?'>>> ")
+    if user_input.lower() in SYSTEM_ENTRIES["cancel"]:
         if can_cancel:
             return None
-        print_func("invalid entry. try again", *args, **kwargs)
-        return get_user_input(msg, expected_type, can_cancel=can_cancel, print_func=print_func, allow_newlines=allow_newlines, help_msg=help_msg, *args, **kwargs)
-    if data.lower() in SYSTEM_ENTRIES["help"]:
-        if help_msg is not None:
-            print_func(help_msg, *args, **kwargs)
-            return get_user_input(msg, expected_type, can_cancel=can_cancel, print_func=print_func, allow_newlines=allow_newlines, help_msg=help_msg, *args, **kwargs)
+        print_function("invalid entry. try again", *args, **kwargs)
+        return get_user_input(message, expected_type, can_cancel=can_cancel, print_function=print_function, allow_newlines=allow_newlines, help_messege=help_messege, *args, **kwargs)
+    if user_input.lower() in SYSTEM_ENTRIES["help"]:
+        if help_messege is not None:
+            print_function(help_messege, *args, **kwargs)
+            return get_user_input(message, expected_type, can_cancel=can_cancel, print_function=print_function, allow_newlines=allow_newlines, help_messege=help_messege, *args, **kwargs)
         else:
             print("Help message not found.", *args, **kwargs)
-            return get_user_input(msg, expected_type, can_cancel=can_cancel, print_func=print_func, allow_newlines=allow_newlines, help_msg=help_msg, *args, **kwargs)
+            return get_user_input(message, expected_type, can_cancel=can_cancel, print_function=print_function, allow_newlines=allow_newlines, help_messege=help_messege, *args, **kwargs)
     if is_custom_test:
         if expected_type in CUSTOM_TYPES.keys():
-            result, success = CUSTOM_TYPES[expected_type]["test_func"](data)
+            result, success = CUSTOM_TYPES[expected_type]["test_func"](user_input)
             if success and result is not None:
                 return result
             else:
-                print_func("Invalid entry. Try again", *args, **kwargs)
-                return get_user_input(msg, expected_type, can_cancel=can_cancel, print_func=print_func, allow_newlines=allow_newlines, help_msg=help_msg, is_custom_test=is_custom_test, *args, **kwargs)
+                print_function("Invalid entry. Try again", *args, **kwargs)
+                return get_user_input(message, expected_type, can_cancel=can_cancel, print_function=print_function, allow_newlines=allow_newlines, help_messege=help_messege, is_custom_test=is_custom_test, *args, **kwargs)
     if expected_type == INT_TYPE:
         try:
-            data = int(data)
+            user_input = int(user_input)
         except ValueError:
-            print_func("Invalid entry. Try again", *args, **kwargs)
-            return get_user_input(msg, expected_type, can_cancel=can_cancel, print_func=print_func, allow_newlines=allow_newlines, help_msg=help_msg, *args, **kwargs)
-        return data
+            print_function("Invalid entry. Try again", *args, **kwargs)
+            return get_user_input(message, expected_type, can_cancel=can_cancel, print_function=print_function, allow_newlines=allow_newlines, help_messege=help_messege, *args, **kwargs)
+        return user_input
     elif expected_type == STR_TYPE:
         if allow_newlines:
-            data = _parse_string_mods(data)
-        return data
+            user_input = _parse_string_mods(user_input)
+        return user_input
     elif expected_type == BOOL_TYPE:
-        if data.lower() in NO_ENTRIES:
+        if user_input.lower() in NO_ENTRIES:
             return False
-        if data.lower() in YES_ENTRIES:
+        if user_input.lower() in YES_ENTRIES:
             return True
-        print_func("invalid entry. try again.", *args, **kwargs)
-        return get_user_input(msg, expected_type, can_cancel=can_cancel, print_func=print_func, allow_newlines=allow_newlines, help_msg=help_msg, *args, **kwargs)
+        print_function("invalid entry. try again.", *args, **kwargs)
+        return get_user_input(message, expected_type, can_cancel=can_cancel, print_function=print_function, allow_newlines=allow_newlines, help_messege=help_messege, *args, **kwargs)
     elif expected_type == FLOAT_TYPE:
         try:
-            return convert_string_to_float(data)
+            return convert_string_to_float(user_input)
         except ValueError:
-            print_func("invalid entry. try again", *args, **kwargs)
-            return get_user_input(msg, expected_type, can_cancel=can_cancel, print_func=print_func, allow_newlines=allow_newlines, help_msg=help_msg, *args, **kwargs)
+            print_function("invalid entry. try again", *args, **kwargs)
+            return get_user_input(message, expected_type, can_cancel=can_cancel, print_function=print_function, allow_newlines=allow_newlines, help_messege=help_messege, *args, **kwargs)
     else:
         raise NotImplementedError
 
@@ -138,31 +138,31 @@ def convert_string_to_float(data: str) -> float:
     return fract + base
 
 
-def set_term_title(name: str):
+def set_term_title(title: str):
     """
     Description:
         sets the terminal title cross system compatible
     Parameters:
-        :param name: The title you name the terminal string
+        :param title: The title you name the terminal string
         :return: None
     """
     if PLTFRM in ("linux", "darwin"):
-        sys.stdout.write(f"\x1b]2;{name}\x07")
+        sys.stdout.write(f"\x1b]2;{title}\x07")
     elif PLTFRM in ("win32", "cygwin"):
-        os.system(f"title {name}")
+        os.system(f"title {title}")
     else:
         raise NotImplementedError
 
 
 def _parse_string_mods(string: str):
-    data = ""
+    result = ""
     if len(string.split("\\t")) != 0:
         for i in string.split("\\n"):
-            data = f"{data}\n{i}"
+            result = f"{result}\n{i}"
     if len(string.split("\\t")) != 0:
-        for i in data.split("\\t"):
-            data = f"{data}\t{i}"
-    return data
+        for i in result.split("\\t"):
+            result = f"{result}\t{i}"
+    return result
 
 
 def parse(string: str):
